@@ -88,9 +88,7 @@ for i = 1:IterationAllowed %iterations to see if we can draw a good triangle.
             b = a;
             v = abp; %cross(cross(ab,ao),ab);
         else
-            v = ao;
-            c = b;
-            b = a;
+            
         end
     %Is origin above (outside) AC?
     elseif dot(acp, ao) > 0
@@ -98,25 +96,13 @@ for i = 1:IterationAllowed %iterations to see if we can draw a good triangle.
             b = a;
             v = acp; %cross(cross(ac,ao),ac);
         else
-            v = ao;
-            c = b;
-            b = a;
+            break
         end
     else
-        display(ao)
-        display(abp)
-        display(acp)
-        display(abc)
-        display(ab)
-        display(ac)
         flag = 1;
         break; %We got a good one.
     end
     a = support(shape2,shape1,v);
-    
-    if dot(v, a) < 0
-        break
-    end
 end
 end
 

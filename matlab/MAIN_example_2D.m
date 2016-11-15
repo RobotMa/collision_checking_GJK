@@ -8,17 +8,21 @@
 %   collisionFlag = GJK(S1Obj,S2Obj,iterationsAllowed)
 %
 %   Qianli Ma, 2016
+%%
 clc;clear all;close all
 
+addpath('~/qianli_workspace/src/rvctools/robot')
+
+%%
 %How many iterations to allow for collision detection.
-iterationsAllowed = 6;
+iterationsAllowed = 2;
 
 % Make a figure
 fig = figure;
 hold on
 
-% Load sample vertex and face data for two convex polyhedra
-SampleShapeData;
+% Load sample vertex data for two convex polygon
+SampleShapeData2D;
 
 % Make shape 1
 S1.Vertices = V1;
@@ -27,53 +31,47 @@ S1.Vertices = V1;
 S2.Vertices = V2;
 
 %Move them through space arbitrarily.
-S1Coords = S1Obj.Vertices;
-S2Coords = S2Obj.Vertices;
+S1Coords = S1.Vertices;
+S2Coords = S2.Vertices;
 
-S1Rot = eye(3,3); % Accumulate angle changes
+S1Rot = rot2(0); % Accumulate angle changes
 
 % Make a random rotation matix to rotate shape 1 by every step
-S1Angs = 0.1*rand(3,1); % Euler angles
-sang1 = sin(S1Angs);
-cang1 = cos(S1Angs);
-cx = cang1(1); cy = cang1(2); cz = cang1(3);
-sx = sang1(1); sy = sang1(2);  sz = sang1(3);
+S1Angs = 0.1*rand; % Euler angles
+S1RotDiff = rot2(S1Angs);
 
-S1RotDiff = ...
-    [          cy*cz,          cy*sz,            -sy
-    sy*sx*cz-sz*cx, sy*sx*sz+cz*cx,          cy*sx
-    sy*cx*cz+sz*sx, sy*cx*sz-cz*sx,          cy*cx];
-
-S2Rot = eye(3,3);
+S2Rot = rot2(0);
 
 % Make a random rotation matix to rotate shape 2 by every step
-S2Angs = 0.1*rand(3,1); % Euler angles
-sang2 = sin(S2Angs);
-cang2 = cos(S2Angs);
-cx = cang2(1); cy = cang2(2); cz = cang2(3);
-sx = sang2(1); sy = sang2(2); sz = sang2(3);
-
-S2RotDiff = ...
-    [          cy*cz,          cy*sz,            -sy
-    sy*sx*cz-sz*cx, sy*sx*sz+cz*cx,          cy*sx
-    sy*cx*cz+sz*sx, sy*cx*sz-cz*sx,          cy*cx];
+S2Angs = 0.1*rand; % Euler angles
+S2RotDiff = rot2(S2Angs);
 
 
+%%
 % Animation loop. Terminates on collision.
 for i = 3:-0.01:0.2
     S1Rot = S1RotDiff*S1Rot;
     S2Rot = S2RotDiff*S2Rot;
     
-    S1Obj.Vertices = (S1Rot*S1Coords')' + i;
-    S2Obj.Vertices = (S2Rot*S2Coords')' + -i;
+    S1.Vertices = (S1Rot*S1Coords')' + i;
+    S2.Vertices = (S2Rot*S2Coords')' + -i;
     
     % Do collision detection
-    collisionFlag = GJK2D(S1Obj,S2Obj,iterationsAllowed);
+    collisionFlag = GJK2D(S1,S2,iterationsAllowed);
     
     drawnow;
     
     if collisionFlag
+        hold on
+        fill(S1.Vertices(:,1), S1.Vertices(:,2),'b')
+        fill(S2.Vertices(:,1), S2.Vertices(:,2),'b')
         t = text(3,3,3,'Collision!','FontSize',30);
-        break;
+        
+        break
+    else
+        hold on
+        fill(S1.Vertices(:,1), S1.Vertices(:,2),'r')
+        fill(S2.Vertices(:,1), S2.Vertices(:,2),'g')
+        hold off
     end
 end

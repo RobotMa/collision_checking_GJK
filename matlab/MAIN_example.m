@@ -11,14 +11,14 @@
 clc;clear all;close all
 
 %How many iterations to allow for collision detection.
-iterationsAllowed = 6;
+iterationsAllowed = 10000;
 
 % Make a figure
 fig = figure;
 hold on
 
 % Load sample vertex and face data for two convex polyhedra
-SampleShapeData;
+SampleShapeDataDebug;
 
 % Make shape 1
 S1.Vertices = V1;
