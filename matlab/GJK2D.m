@@ -103,12 +103,6 @@ for i = 1:IterationAllowed %iterations to see if we can draw a good triangle.
             b = a;
         end
     else
-        display(ao)
-        display(abp)
-        display(acp)
-        display(abc)
-        display(ab)
-        display(ac)
         flag = 1;
         break; %We got a good one.
     end
