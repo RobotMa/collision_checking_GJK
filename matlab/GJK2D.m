@@ -30,7 +30,7 @@ function flag = GJK2D(shape1,shape2,iterations)
 %  
 %   This script is adapted from the work of Matthew Sheen, 2016
 %   
-%   Qianli Ma, 2016
+%   Qianli Ma, 2016 qianli.ma622@gmail.com Johns Hopkins University
 %
 
 %Point 1 and 2 selection (line segment)
@@ -38,12 +38,7 @@ v = [0.8 0.5];
 [a,b] = pickLine(v,shape2,shape1);
 
 %Point 3 selection (triangle)
-[a,b,c,flag] = pickTriangle(a,b,shape2,shape1,iterations);
-
-%Point 4 selection (tetrahedron)
-%if flag == 1 %Only bother if we could find a viable triangle.
-%    [a,b,c,d,flag] = pickTetrahedron(a,b,c,shape2,shape1,iterations);
-%end
+[~,~,~,flag] = pickTriangle(a,b,shape2,shape1,iterations);
 
 end
 
