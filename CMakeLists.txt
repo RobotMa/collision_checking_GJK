@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(GJK_collision_detection)
+project(gjk_collision_detection)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
